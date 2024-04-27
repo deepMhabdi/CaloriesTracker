@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      href="signup.css"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" integrity="sha512-a+SUDuwNzXDvz4XrIcXHuCf089/iJAoN4lmrXJg18XnduKK6YlDHNRalv4yd1N40OKI80tFidF+rqTFKGPoWFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Sign Up - College Quest</title>
+  </head>
+  <body class="signup-body">
+    <div class="signup-container">
+      <h2>Sign Up</h2>
+      <form id="mainform">
+        <input
+          id="usernameinp"
+          type="text"
+          placeholder="Username"
+          required
+        />
+        <input
+          id="emailinp"
+          type="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          id="passwordinp"
+          type="password"
+          placeholder="Password"
+          required
+        />
+        <label for="show-password">
+          <input
+            type="checkbox"
+            id="show-password"
+          />
+          Show Password
+        </label>
+        <button
+          type="submit"
+          id="submitinp"
+          value="submit"
+        >
+          Sign Up
+        </button>
+      </form>
+      <p class="login-link">
+        Already have an account? <a href="login.html">Log In</a>
+      </p>
+    </div>
+    <script type="module">
+      
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+      import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+      import { getAuth,createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+      
+     
+      const firebaseConfig = {
+        apiKey: "AIzaSyAIPUeaTj-crPknV9-XP9QlONRMHsBo-yY",
+        authDomain: "calorie-tracker-fee35.firebaseapp.com",
+        projectId: "calorie-tracker-fee35",
+        storageBucket: "calorie-tracker-fee35.appspot.com",
+        messagingSenderId: "1034624823534",
+        appId: "1:1034624823534:web:4ebebf5435b316675b03ff",
+        measurementId: "G-2E9V9WLD96"
+      };
+      
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      const db = getDatabase();
+      const auth = getAuth(app);
+
+      let EmailInp = document.getElementById('emailinp');
+        let PassInp = document.getElementById('passwordinp');
+        let UsernameInp = document.getElementById('usernameinp');
+        let MainformInp = document.getElementById('mainform');
+
+        let registerUser = (evt) => {
+          evt.preventDefault();
+          createUserWithEmailAndPassword(auth, EmailInp.value, PassInp.value)
+            .then((Credentials) => {
+              const userId = Credentials.user.uid;
+              const userData = {
+                username: UsernameInp.value,
+                email: EmailInp.value
+              };
+              // Store user data in the Realtime Database under the 'UserAuthList' node
+              set(ref(db, 'UserAuthList/' + userId), userData)
+                .then(() => {
+                  alert('\u2713 Signed Up Successfully');
+                  // Redirect to the desired destination after successful signup
+                  window.location.href = '/public/index2.html';
+                })
+                .catch((error) => {
+                  alert('Error storing user data: ' + error.message);
+                });
+            })
+            .catch((error) => {
+              alert('Error creating user: ' + error.message);
+            });
+        };
+
+        MainformInp.addEventListener('submit', registerUser);
+      // import{getDatabase,ref,set,child,get} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"
+      // const db =getDatabase();
+
+      // const username = document.getElementById('usernameinp');
+      // const email = document.getElementById('emailinp');
+      // const pass = document.getElementById('passwordinp'); 
+      // const submit = document.getElementById('submitinp');
+
+      // function Validation(){
+      //   let userregex = /^[a-zA-Z0-9]{5,}$/;
+      //   let emailregex = /^[a-zA-Z0-9]+@(gmail|yahoo|outlook)\.com$/;
+      //   if(!userregex.test(username.value))
+      //   {
+      //     alert("-username can only be alphanumeric\n-username must be aleast 5 characters\n-username cannot contain space");
+      //     return false;
+      //   }
+      //   if(!emailregex.test(email.value))
+      //   {
+      //       alert("Enter a valid email");
+      //       return false;
+      //   }
+
+      //   return true;
+      // }
+      // function registerUser(){
+      //   if(!Validation()){
+      //       return;
+      //   };
+      //   const dbRef =ref(db);
+      //   get (child(dbRef,"userList/"+username.value)).then((snapshot)=>{
+      //     if(snapshot.exist())
+      //     {
+      //       alert("Account Already Exist!");
+
+      //     }
+      //     else{
+      //       set(ref(db,"userList/"+username.value),
+      //       {
+      //         email:email.value,
+      //         username:username.value,
+      //         password:pass.value
+      //       })
+      //       .then(()=>
+      //       {alert("User added successfully");})
+      //       .catch((error)=>{
+      //         alert("error"+error);
+      //       })
+      //     }
+      //   });
+      // }
+      // submit.addEventListener('click',registerUser);
+      
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+  </body>
+</html>

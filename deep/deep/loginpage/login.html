@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      href="login.css"
+    />
+    <link
+      rel="icon"
+      href="data:;base64,iVBORw0KGgo="
+    />
+
+    <title>Login - College Quest</title>
+  </head>
+  <body class="login-body">
+    <div class="login-container">
+      <h2>Login</h2>
+      <form id="mainform">
+        <input
+          id="emailinp"
+          type="email"
+          placeholder="Email"
+          required
+        />
+        <input
+          id="passwordinp"
+          type="password"
+          placeholder="Password"
+          required
+        />
+        <label for="show-password">
+          <input
+            type="checkbox"
+            id="show-password"
+          />
+          Show Password
+        </label>
+        <label for="remember-me">
+          <input
+            type="checkbox"
+            id="remember-me"
+          />
+          Remember Me
+        </label>
+        <button type="submit">Log In</button>
+      </form>
+      <p class="forgot-password"><a href="#">Forgot Password?</a></p>
+      <p class="signup-link">
+        Don't have an account? <a href="signup.html">Sign Up</a>
+      </p>
+    </div>
+  </body>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import {
+      getDatabase,
+      get,
+      ref,
+      child,
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIPUeaTj-crPknV9-XP9QlONRMHsBo-yY",
+      authDomain: "calorie-tracker-fee35.firebaseapp.com",
+      projectId: "calorie-tracker-fee35",
+      storageBucket: "calorie-tracker-fee35.appspot.com",
+      messagingSenderId: "1034624823534",
+      appId: "1:1034624823534:web:4ebebf5435b316675b03ff",
+      measurementId: "G-2E9V9WLD96"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase();
+    const auth = getAuth(app);
+    const dbref = ref(db);
+
+    let EmailInp = document.getElementById("emailinp");
+    let PassInp = document.getElementById("passwordinp");
+    let MainformInp = document.getElementById("mainform");
+
+    let loginUser = (evt) => {
+  evt.preventDefault();
+  signInWithEmailAndPassword(auth, EmailInp.value, PassInp.value)
+  .then((Credentials) => {
+    console.log(Credentials);
+    get(child(dbref, 'UserAuthList/' + Credentials.user.uid)).then(
+      (snapshot) => {
+        if (snapshot.exists) {
+          console.log('User data found:', snapshot.val());
+          const userData = snapshot.val();
+          if (userData && userData.username) {
+            sessionStorage.setItem(
+              "user-info",
+              JSON.stringify({
+                username: userData.username
+              })
+            )
+          } else {
+            console.log('Username not found in user data');
+          }
+          sessionStorage.setItem("user-creds", JSON.stringify(Credentials.user));
+          console.log('Redirecting to /public/index.html');
+          window.location.href = '/public/index2.html'; // Redirect upon successful login to index.html in the public folder
+        } else {
+          console.log('User data not found in snapshot');
+        }
+      }
+    )
+  })
+  .catch((error) => {
+    alert(error.message);
+    console.error('Login error:', error.code, error.message);
+  });
+
+    // setTimeout(function() {
+    //         // Change the URL to the desired destination
+    //         window.location.href = '/public/index2.html';
+    //     }, 500); 
+};
+
+    MainformInp.addEventListener("submit", loginUser);
+  </script>
+</html>

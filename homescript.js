@@ -182,22 +182,34 @@ const blogContents = {
     blog3: "Calories play a crucial role in our lives, influencing our health and well-being in profound ways. By understanding and tracking calories with precision, we can unlock the potential to transform our lives for the better.Calories aren't just units of energy; they're key players in our body's functioning. By paying attention to the quality and quantity of calories we consume, we gain insight into our dietary habits and their impact on our health.Precision in calorie tracking enables us to make informed choices about our nutrition. We learn to prioritize nutritious foods while minimizing empty calories, leading to better overall health.Tracking calories also helps us manage our weight effectively. By balancing calorie intake with expenditure, we can achieve our weight goals and maintain them over time."
 };
 
-function showBlog(blogId) {
-    const blogContent = document.getElementById("blogContent");
-    const contentBox = document.getElementById(blogId);
-    blogContent.innerHTML = `<p>${blogContents[blogId]}</p>`;
-    blogContent.classList.remove("hidden");
-    // contentBox.classList.add("hidden"); // Hide the clicked content box
-}
-
 // Add event listeners to each content box to show content on click
 document.querySelectorAll(".content-box").forEach(box => {
-    box.addEventListener("click", () => {
+    box.addEventListener("click", (event) => {
+        event.preventDefault(); // Prevent default anchor tag behavior
         const blogId = box.id;
         showBlog(blogId);
     });
-    return false;
 });
+
+function showBlog(blogId) {
+    const blogContent = document.getElementById("blogContent");
+    const contentBox = document.getElementById(blogId);
+    
+    // Hide all other blog content containers
+    document.querySelectorAll(".content-box").forEach(box => {
+        if (box.id !== blogId) {
+            box.classList.add("hidden");
+        }
+    });
+    
+    // Show the clicked blog content container
+    blogContent.innerHTML = `<p>${blogContents[blogId]}</p>`;
+    blogContent.classList.remove("hidden");
+}
+
+
+
+
   
   
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutritional Meal Suggestions</title>
+</head>
+<body>
+    <div id="mealSuggestions">
+        <h2>Meal Suggestions</h2>
+        <ul id="mealList"></ul>
+    </div>
+
+    <!-- Add a button for triggering meal suggestions -->
+    <button id="fetchButton">Fetch Meal Suggestions</button>
+
+    <script>
+        async function fetchMealSuggestions() {
+            const appId = "YOUR_APP_ID";
+            const appKey = "YOUR_APP_KEY";
+            const userInput = {
+                // You can include user preferences here
+                // For example, dietary restrictions, calorie goals, etc.
+            };
+            const queryParams = new URLSearchParams(userInput).toString();
+            const apiEndpoint = `https://api.edamam.com/search?q=healthy&app_id=${appId}&app_key=${appKey}&${queryParams}`;
+
+            try {
+                const response = await fetch(apiEndpoint);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch meal suggestions (${response.status} ${response.statusText})`);
+                }
+                const data = await response.json();
+                displayMealSuggestions(data.hits);
+            } catch (error) {
+                console.error("Error fetching meal suggestions:", error);
+                alert("Failed to fetch meal suggestions. Please try again later.");
+            }
+        }
+
+        function displayMealSuggestions(meals) {
+            const mealList = document.getElementById('mealList');
+            mealList.innerHTML = '';
+
+            meals.forEach(meal => {
+                const mealName = meal.recipe.label;
+                const mealCalories = Math.round(meal.recipe.calories);
+                const listItem = document.createElement('li');
+                listItem.textContent = `${mealName} - ${mealCalories} calories`;
+                mealList.appendChild(listItem);
+            });
+        }
+
+        // Add event listener to the fetch button
+        const fetchButton = document.getElementById('fetchButton');
+        fetchButton.addEventListener('click', fetchMealSuggestions);
+    </script>
+</body>
+</html>
