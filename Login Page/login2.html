@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="login.css"">
+    <link rel="icon" href="./favicon.png">
+    <title>Calorie Tracker</title>
+</head>
+
+<body>
+    <div class="cursor">
+
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+    </div>
+    
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            <form id="mainform">
+                <h1>Create Account</h1>
+                <div class="social-icons">
+                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email for registeration</span>
+                <input type="text" placeholder="Name" id="usernameinp" >
+                <input type="email" placeholder="Email" id="emailinpSignup">
+                <input type="password" placeholder="Password" id="passwordinpSignup">
+                <button type="submit">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form id="loginmainform">
+                <h1>Sign In</h1>
+                <div class="social-icons">
+                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+                <span>or use your email password</span>
+                <input type="email" placeholder="Email" id="emailinpLogin">
+                <input type="password" placeholder="Password" id="passwordinpLogin">
+                <a href="#">Forget Your Password?</a>
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Welcome Back!</h1>
+                    <p>Enter your personal details to use all of site features</p>
+                    <button class="hidden" id="login">Sign In</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Register with your personal details to use all of site features</p>
+                    <button class="hidden" id="register">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+</body>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+    import {
+      getDatabase,
+      get,
+      ref,
+      child,
+      set,
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword, createUserWithEmailAndPassword,
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIPUeaTj-crPknV9-XP9QlONRMHsBo-yY",
+      authDomain: "calorie-tracker-fee35.firebaseapp.com",
+      projectId: "calorie-tracker-fee35",
+      storageBucket: "calorie-tracker-fee35.appspot.com",
+      messagingSenderId: "1034624823534",
+      appId: "1:1034624823534:web:4ebebf5435b316675b03ff",
+      measurementId: "G-2E9V9WLD96"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getDatabase();
+    const auth = getAuth(app);
+    const dbref = ref(db);
+
+    let UsernameInp = document.getElementById('usernameinp');
+    let EmailInpSignup = document.getElementById("emailinpSignup");
+    let EmailInpLogin = document.getElementById("emailinpLogin");
+    let PassInpSignup = document.getElementById("passwordinpSignup");
+    let PassInpLogin = document.getElementById("passwordinpLogin");
+    let MainformInp = document.getElementById("mainform");
+    let formInp = document.getElementById("loginmainform");
+    let loginUser = (evt) => {
+  evt.preventDefault();
+  signInWithEmailAndPassword(auth, EmailInpLogin.value, PassInpLogin.value)
+  .then((Credentials) => {
+    console.log(Credentials);
+    get(child(dbref, 'UserAuthList/' + Credentials.user.uid)).then(
+      (snapshot) => {
+        if (snapshot.exists) {
+          console.log('User data found:', snapshot.val());
+          const userData = snapshot.val();
+          if (userData && userData.username) {
+            sessionStorage.setItem(
+              "user-info",
+              JSON.stringify({
+                username: userData.username
+              })
+            )
+          } else {
+            console.log('Username not found in user data');
+          }
+          sessionStorage.setItem("user-creds", JSON.stringify(Credentials.user));
+          console.log('Redirecting to /public/index.html');
+          window.location.href = '../Main_Web/home.html'; // Redirect upon successful login to index.html in the public folder
+        } else {
+          console.log('User data not found in snapshot');
+        }
+      }
+    )
+  })
+  .catch((error) => {
+    alert(error.message);
+    console.error('Login error:', error.code, error.message);
+  });
+
+    // setTimeout(function() {
+    //         // Change the URL to the desired destination
+    //         window.location.href = '/public/index2.html';
+    //     }, 500); 
+};
+
+    //MainformInp.addEventListener("submit-login", loginUser);
+
+
+    ///////////////////
+    let registerUser = (evt) => {
+        evt.preventDefault();
+        createUserWithEmailAndPassword(auth, EmailInpSignup.value, PassInpSignup.value)
+          .then((Credentials) => {
+            const userId = Credentials.user.uid;
+            const userData = {
+              username: UsernameInp.value,
+              email: EmailInp.value
+            };
+            // Store user data in the Realtime Database under the 'UserAuthList' node
+            set(ref(db, 'UserAuthList/' + userId), userData)
+              .then(() => {
+                alert('\u2713 Signed Up Successfully');
+                // Redirect to the desired destination after successful signup
+                window.location.href = '/Main_Web/home.html';
+              })
+              .catch((error) => {
+                alert('Error storing user data: ' + error.message);
+              });
+          })
+          .catch((error) => {
+            alert('Error creating user: ' + error.message);
+          });
+      };
+
+      MainformInp.addEventListener('submit', registerUser);
+      formInp.addEventListener('submit',  loginUser);
+  </script>
+</html>

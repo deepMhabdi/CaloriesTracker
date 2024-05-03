@@ -439,19 +439,19 @@ color: transparent;
 {
 
   text-align: center;
-  background-image: url(images/WhatsApp\ Image\ 2024-02-17\ at\ 09.13.28_2804718c.jpg);
+  background-image: url(/images/WhatsApp\ Image\ 2024-02-17\ at\ 09.13.28_2804718c.jpg);
   background-size: cover;
 }
 
 .second-svc .info-1
 {
-  background-image: url(images/WhatsApp\ Image\ 2024-02-17\ at\ 09.13.28_2b389502.jpg);
+  background-image: url(/images/WhatsApp\ Image\ 2024-02-17\ at\ 09.13.28_2b389502.jpg);
   background-size: cover;
 }
 
 .third-svc .info-1
 {
-  background-image: url(images/WhatsApp\ Image\ 2024-02-17\ at\ 09.13.28_ebf8abce.jpg);
+  background-image: url(/images/WhatsApp\ Image\ 2024-02-17\ at\ 09.13.28_ebf8abce.jpg);
   background-size: cover;
 }
 
@@ -486,7 +486,7 @@ color: wheat;
   margin-right: 400px;
   height: 400px;
   margin-top: 30px;
-  background-image: url(images/What-is-BMI-How-to-Calculate-BMI.jpg.jpeg);
+  background-image: url(/images/What-is-BMI-How-to-Calculate-BMI.jpg.jpeg);
   background-size: contain;
   text-align: right;
 
@@ -533,6 +533,7 @@ color: wheat;
 #back-button:hover {
   background-color: #ddd;
 }
+
 .bmi-calculator label {
     font-weight: bold;
     margin-bottom: 5px;

@@ -213,13 +213,7 @@ function showBlog(blogId) {
   
   
 
-// Ensure the provided HTML structure has correct class names:
-// - `.svc-container` for the main container
-// - `.first-svc` for the first service section
-// - `.bmi-calculator` for the BMI calculator section
-// - `.disappear` class for hidden elements
-// - Input elements with IDs `height` and `weight`
-// - Button element with ID `back-button`
+
 
 
 
