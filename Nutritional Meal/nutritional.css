@@ -2,6 +2,25 @@ body {
     background: linear-gradient(135deg, #f5f5f5, #c7ecee); /* Gradient from light gray to light blue */
 }
 
+.cursor {
+    pointer-events: none;
+    position: fixed;
+    display: block;
+    border-radius: 0;
+    mix-blend-mode: difference;
+    top: 0;
+    left: 0;
+    z-index: 9999999999999999;  
+  }
+  
+  .circle {
+      position: absolute;
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50px;
+      background-color: #fff;
+  }
 
 .container {
     display: flex;
