@@ -38,6 +38,7 @@ body {
 
 #search-recipe {
     margin: 10px;
+    border-radius: 20px;
 }
 
 .container:hover {
@@ -55,6 +56,8 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    border-radius: 20px;
+    height: 50px;
 }
 
 .container button:hover {
@@ -151,4 +154,18 @@ body {
 }
 
 
+.subtitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #45a049;
+    width: 120px;
+    height: 50px;
+    border-radius: 20px;
+    text-align: center;
+}
 
+.subtitle>a {
+    text-decoration: none;
+    color: white;
+}

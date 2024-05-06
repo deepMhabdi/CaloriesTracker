@@ -176,36 +176,20 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-const blogContents = {
-    blog1: "Unlock the secrets to mastering your metabolism with our comprehensive calorie tracking guide. Learn how to optimize your calorie intake and expenditure to achieve your fitness and health goals. From understanding macronutrients to tracking your daily activity levels, this guide covers everything you need to know to take control of your metabolism and transform your body. Whether you're looking to lose weight, gain muscle, or simply improve your overall well-being, this ultimate calorie tracking guide will empower you to make informed choices and reach your desired results.",
-    blog2: "Delve into the intricacies of calorie tracking with our insightful guide, 'Cracking the Calorie Code.' Unravel the mysteries behind effective calorie management and learn practical strategies for tracking your calorie intake with precision. From understanding portion sizes to deciphering food labels, this blog provides valuable tips and techniques to help you stay on top of your calorie goals. Whether you're a beginner or a seasoned calorie tracker, discover new methods and tools to optimize your dietary habits and achieve sustainable results. With our expert advice and proven strategies, you'll gain the knowledge and confidence to navigate the world of calorie tracking like a pro.",
-    blog3: "Calories play a crucial role in our lives, influencing our health and well-being in profound ways. By understanding and tracking calories with precision, we can unlock the potential to transform our lives for the better.Calories aren't just units of energy; they're key players in our body's functioning. By paying attention to the quality and quantity of calories we consume, we gain insight into our dietary habits and their impact on our health.Precision in calorie tracking enables us to make informed choices about our nutrition. We learn to prioritize nutritious foods while minimizing empty calories, leading to better overall health.Tracking calories also helps us manage our weight effectively. By balancing calorie intake with expenditure, we can achieve our weight goals and maintain them over time."
-};
-
-// Add event listeners to each content box to show content on click
-document.querySelectorAll(".content-box").forEach(box => {
-    box.addEventListener("click", (event) => {
-        event.preventDefault(); // Prevent default anchor tag behavior
-        const blogId = box.id;
-        showBlog(blogId);
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('.bmi-scroll').addEventListener('click', function () {
+        var page4Section = document.querySelector('.page4');
+        page4Section.scrollIntoView({ behavior: 'smooth' });
     });
 });
 
-function showBlog(blogId) {
-    const blogContent = document.getElementById("blogContent");
-    const contentBox = document.getElementById(blogId);
-    
-    // Hide all other blog content containers
-    document.querySelectorAll(".content-box").forEach(box => {
-        if (box.id !== blogId) {
-            box.classList.add("hidden");
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('.blog-section').addEventListener('click', function () {
+        var page4Section = document.querySelector('.page5');
+        page4Section.scrollIntoView({ behavior: 'smooth' });
     });
-    
-    // Show the clicked blog content container
-    blogContent.innerHTML = `<p>${blogContents[blogId]}</p>`;
-    blogContent.classList.remove("hidden");
-}
+});
+
 
 
 
