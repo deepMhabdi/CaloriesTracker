@@ -10,7 +10,7 @@
 .cursor {
     pointer-events: none;
     position: fixed;
-    display: block;
+    display: block; 
     border-radius: 0;
     mix-blend-mode: difference;
     top: 0;
